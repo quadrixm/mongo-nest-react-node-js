@@ -1,4 +1,4 @@
-[
+export const coupons = [
   {
     "code": "MOW10",
     "amount": "10",

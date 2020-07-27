@@ -1,19 +1,39 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { CreateBookingDto } from './dto/create-booking.dto';
+import { Booking } from './schemas/booking.schema';
+import { BookingsService } from './bookings.service';
 
 @Controller('bookings')
 export class BookingsController {
+
+	constructor(private readonly bookingsService: BookingsService) {
+	}
+
+	@Get()
+	find(): string {
+		return 'This return bookings';
+	}
+
 	@Post()
-	create(): string {
-		return 'This action creates a booking';
+	async create(@Body('data') bookingDto: CreateBookingDto): Promise<Booking> {
+		return this.bookingsService.create(bookingDto);
 	}
 
-	@Post('applyCoupon')
-	applyCoupon(): string {
-		return 'This calculate the price after applying coupon';
+	@Post('apply-coupon')
+	applyCoupon(@Body('data') bookingDto: CreateBookingDto): CreateBookingDto {
+		let createBookingDto = this.bookingsService.applyCoupon(bookingDto);
+		if (createBookingDto) {
+			return createBookingDto;
+		} else {
+			throw new HttpException({
+				status: HttpStatus.NOT_FOUND,
+				error: 'Invalid Coupon',
+			}, HttpStatus.NOT_FOUND);
+		};
 	}
 
-	@Post('price')
-	price(): string {
-		return 'This action adds calculate all the price';
+	@Post('calculate-price')
+	calculatePrice(@Body('data') bookingDto: CreateBookingDto): CreateBookingDto {
+		return this.bookingsService.calculatePrice(bookingDto);
 	}
 }
