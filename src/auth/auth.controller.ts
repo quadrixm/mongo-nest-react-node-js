@@ -15,7 +15,7 @@ export class AuthController {
 	}
 
 	@Post()
-	async create(@Body('data') userData: CreateUserDto): Promise<User> {
+	async create(@Body() userData: CreateUserDto): Promise<User> {
 		return this.authService.create(userData);
 	}
 }

@@ -1,13 +1,13 @@
 export const coupons = [
   {
-    "code": "MOW10",
-    "amount": "10",
-    "type": "percent"
+    "code": "MOW5",
+    "amount": "5",
+    "type": "percentage"
 
   },
   {
-    "code": "MOW50",
-    "amount": "50",
+    "code": "MOW10",
+    "amount": "10",
     "type": "absolute"
 
   }

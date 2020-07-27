@@ -15,25 +15,22 @@ export class BookingsController {
 	}
 
 	@Post()
-	async create(@Body('data') bookingDto: CreateBookingDto): Promise<Booking> {
+	async create(@Body() bookingDto: CreateBookingDto): Promise<Booking> {
 		return this.bookingsService.create(bookingDto);
 	}
 
 	@Post('apply-coupon')
-	applyCoupon(@Body('data') bookingDto: CreateBookingDto): CreateBookingDto {
-		let createBookingDto = this.bookingsService.applyCoupon(bookingDto);
+	applyCoupon(@Body() bookingDto: CreateBookingDto): CreateBookingDto {
+		const createBookingDto = this.bookingsService.applyCoupon(bookingDto);
 		if (createBookingDto) {
 			return createBookingDto;
 		} else {
-			throw new HttpException({
-				status: HttpStatus.NOT_FOUND,
-				error: 'Invalid Coupon',
-			}, HttpStatus.NOT_FOUND);
+			throw new HttpException({ status: HttpStatus.NOT_FOUND, error: 'Invalid Coupon' }, HttpStatus.NOT_FOUND);
 		};
 	}
 
 	@Post('calculate-price')
-	calculatePrice(@Body('data') bookingDto: CreateBookingDto): CreateBookingDto {
+	calculatePrice(@Body() bookingDto: CreateBookingDto): CreateBookingDto {
 		return this.bookingsService.calculatePrice(bookingDto);
 	}
 }

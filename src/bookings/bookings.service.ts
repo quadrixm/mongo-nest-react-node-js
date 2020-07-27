@@ -10,23 +10,34 @@ export class BookingsService {
 	constructor(@InjectModel(Booking.name) private bookingModel: Model<Booking>) {}
 
 	async create(dto: CreateBookingDto): Promise<Booking> {
+		// If coupons applied then return price with coupon and if it is not valid, returning simple pricing.
+		dto = this.applyCoupon(dto) || this.calculatePrice(dto);
+
 		const booking = new this.bookingModel(dto);
 		return booking.save();
 	}
 
 	applyCoupon(dto: CreateBookingDto): CreateBookingDto | undefined {
 
-		if (dto.couponCode && coupons.find(coupon => coupon.code === dto.couponCode)) {
-			const coupon = coupons.find(coupon => coupon.code === dto.couponCode);
+		const coupon = dto.couponCode && coupons.find(coupon => coupon.code === dto.couponCode);
+
+		if (coupon) {
+			// Calculate the price first and then applying coupon
+			dto = this.calculatePrice(dto);
+
+			const { price } = dto;
+
 			switch (coupon.type) {
-				case "percent":
-					dto.price = dto.price - Math.round(dto.price * parseInt(coupon.amount, 10) / 100);
+				case "percentage":
+					dto.price = price - (price * parseInt(coupon.amount, 10) / 100);
+					break;
 				case "absolute":
-					dto.price = dto.price - parseInt(coupon.amount, 10);
+					dto.price = price - parseInt(coupon.amount, 10);
+					break;
 			}
-			if (dto.price < 0) {
-				dto.price = 0;
-			}
+
+			dto.price = dto.price > 0 ? Math.round(dto.price * 100) / 100 : 0;
+
 			return dto;
 		}
 		return undefined;
@@ -35,16 +46,18 @@ export class BookingsService {
 	calculatePrice(dto: CreateBookingDto): CreateBookingDto {
 		dto.actualPrice = dto.plotArea;
 		dto.price = dto.plotArea;
-		if (dto.plotArea > 25) {
+
+		const {plotArea, price} = dto;
+
+		if (plotArea > 25) {
 			// a discount of 15%
-			dto.price = dto.price - Math.round(dto.price * 0.15);
-		} else if (25 <= dto.plotArea && dto.plotArea > 15) {
+			dto.price = price - (price * 0.15);
+		} else if (plotArea <= 25 && plotArea > 15) {
 			// a discount of 10%
-			dto.price = dto.price - Math.round(dto.price * 0.1);
+			dto.price = price - (price * 0.1);
 		}
-		if (dto.price < 0) {
-			dto.price = 0;
-		}
+
+		dto.price = dto.price > 0 ? Math.round(dto.price * 100) / 100 : 0;
 
 		return dto;
 	}
