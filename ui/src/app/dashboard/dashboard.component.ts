@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
     this.bookingsService.create(this.bookingDto).subscribe(res => {
       console.log(res);
       this.bookingDto = new CreateBookingDto();
+      this.bookingDto.userId = this.authUser._id;
       alert(`Booking done successfully. Your booking id is ${res._id}`)
     }, er => alert(er));
   }
