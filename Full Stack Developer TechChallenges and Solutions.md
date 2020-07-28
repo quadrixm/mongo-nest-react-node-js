@@ -75,7 +75,10 @@ To acquire new clients, Billy wants to have a coupon system in place as well.
     
 3. How would you deploy the solution in an enterprise environment?
 
-    - Creating a docker environment on the local machine and running the app using PM2.
-    - The docker image than can be pulled to any server.
-    - Will pull the code from the git repo and then build it, test it, then run it.
+    - In order to run the nodeJs I will use PM2.
+    - For deploying codes and deploying we can use the following.
+        - Ansible 
+        - Github Action 
+        - Circle CI
+        - Direct SSH login and running each seperate command or create a shell file to run each command.
     
