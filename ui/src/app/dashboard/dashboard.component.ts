@@ -22,13 +22,19 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.authUser = this.authService.getUser();
-    if (!this.authUser._id) {
+    if (!this.authUser || !this.authUser._id) {
       this.router.navigate(['/']).catch(
         (reason: any) => {
           console.warn(reason + 'Route not found');
         }
       );
     }
+    this.bookingDto = new CreateBookingDto();
+    this.bookingDto.userId = this.authUser._id;
+  }
+
+  getDiscount() {
+    return Math.round((this.bookingDto.actualPrice - this.bookingDto.price) * 100) / 100;
   }
 
   validate() {
@@ -52,7 +58,8 @@ export class DashboardComponent implements OnInit {
     }
     this.bookingsService.create(this.bookingDto).subscribe(res => {
       console.log(res);
-      alert(`Booking done successfully. Your bookig id is ${res._id}`)
+      this.bookingDto = new CreateBookingDto();
+      alert(`Booking done successfully. Your booking id is ${res._id}`)
     }, er => alert(er));
   }
 
@@ -75,7 +82,19 @@ export class DashboardComponent implements OnInit {
     this.bookingsService.applyCoupon(this.bookingDto).subscribe(res => {
       console.log(res);
       this.bookingDto = res;
-    }, er => alert(er));
+    }, er => {
+      console.log(er);
+      alert(er.error.error);
+    });
+  }
+
+  onLogout() {
+    this.authService.removeUser();
+    this.router.navigate(['/']).catch(
+      (reason: any) => {
+        console.warn(reason + 'Route not found');
+      }
+    );
   }
 
 }

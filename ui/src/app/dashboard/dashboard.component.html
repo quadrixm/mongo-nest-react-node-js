@@ -1,1 +1,52 @@
-<p>dashboard works!</p>
+<br/><br/>
+<div class="row">
+  <div class="col">
+    <button class="btn btn-sm btn-primary float-right" type="button" (click)="onLogout()">Logout</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <h1 class="text-center">Make a Booking</h1>
+  </div>
+</div>
+<br/><br/>
+<div class="row">
+  <div class="col">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <input type="number" class="form-control" name="plotArea" placeholder="Plot Area" [(ngModel)]="bookingDto.plotArea"/>
+          <div class="input-group-append"><span class="input-group-text">Sqrt Mtr</span></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="button" (click)="onContinue()">Continue</button>
+      </div>
+    </form>
+  </div>
+  <div class="col">
+    <div class="row" *ngIf="bookingDto.price">
+      <div class="col">
+        <div class="row"><div class="col">Price</div><div class="col">£{{bookingDto.actualPrice}}</div></div>
+        <div class="row text-success" *ngIf="bookingDto.price < bookingDto.actualPrice">
+          <div class="col">Discount</div><div class="col">-£{{getDiscount()}}</div>
+        </div>
+        <div class="row"><div class="col">Total</div><div class="col">£{{bookingDto.price}}</div></div>
+      </div>
+    </div>
+    <br/>
+    <div class="row" *ngIf="bookingDto.price">
+      <div class="col">
+        <div class="input-group">
+          <div class="input-group-prepend"><span class="input-group-text">Coupon</span></div>
+          <input class="form-control" type="text" name="couponCode" placeholder="Coupon Code" [(ngModel)]="bookingDto.couponCode" />
+          <div class="input-group-append"><button class="btn btn-primary" type="button" (click)="onCouponApply()">Apply</button></div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div class="row" *ngIf="bookingDto.price">
+      <div class="col"><button class="btn btn-primary pull-right" type="button" (click)="onSubmit()">Book</button></div>
+    </div>
+  </div>
+</div>

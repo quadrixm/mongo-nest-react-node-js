@@ -24,4 +24,8 @@ export class AuthService {
   public getUser() {
     return JSON.parse(localStorage.getItem("user"));
   }
+
+  public removeUser() {
+    return localStorage.removeItem("user");
+  }
 }
