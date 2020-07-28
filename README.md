@@ -1,6 +1,4 @@
-# Maw a lawn
-
-Challenge Answers are in `Full_Stack_Developer_TechChallenges_and_Solutions.md` file
+# Maw a Lawn
 
 ## Description
 
