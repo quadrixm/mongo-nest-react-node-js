@@ -16,4 +16,12 @@ export class AuthService {
   public create(userDto: CreateUserDto) {
     return this.httpClient.post<User>(`${this.url}`, userDto);
   }
+
+  public setUser(user: User) {
+    localStorage.setItem("user", JSON.stringify(user));
+  }
+
+  public getUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
 }
