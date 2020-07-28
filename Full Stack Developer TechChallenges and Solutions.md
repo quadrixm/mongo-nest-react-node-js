@@ -61,5 +61,21 @@ To acquire new clients, Billy wants to have a coupon system in place as well.
 > This section has no correct answers. Albeit optional, your answers will help us understand your thinking process.
 
 1. What other features would you like to add?
+    
+    - Social Authentication
+    - Histories of Mowing
+    - Notification of coming Mowing of grass time.
+    - Subscription option 
+    - Time slot for booking and premium pricing for special time slots.
+    
 2. How would you handle user authentication?
+    
+    - Using PassportJs to add authentication.
+    - With JWT, each api will be authenticated. 
+    
 3. How would you deploy the solution in an enterprise environment?
+
+    - Creating a docker environment on the local machine and running the app using PM2.
+    - The docker image than can be pulled to any server.
+    - Will pull the code from the git repo and then build it, test it, then run it.
+    
