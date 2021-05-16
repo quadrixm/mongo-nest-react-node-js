@@ -1,4 +1,5 @@
-# Maw a Lawn
+# Example App using NestJs, Angular Js, Bulma CSS and Mongo Db
+
 
 ## Description
 
